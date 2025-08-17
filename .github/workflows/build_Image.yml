@@ -27,7 +27,7 @@ jobs:
       - name: Rebuild Armbian
         uses: armbian/build@v25.11.0-trunk.3
         with:
-          armbian_target: "image"
+          armbian_target: ""
           armbian_kernel_branch: "current"
           armbian_release: "sid"
           armbian_board: "uefi-loong64"
