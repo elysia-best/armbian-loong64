@@ -14,24 +14,36 @@ jobs:
   debian:
     name: Build loong64 iso
     runs-on: ubuntu-latest
-    container:
-      image: debian:trixie-backports
-      options: --privileged=true
     permissions: write-all
     steps:
+      - name: Maximize build space
+        uses: easimon/maximize-build-space@master
+        with:
+          root-reserve-mb: 4096
+          swap-size-mb: 512
+          remove-dotnet: 'true'
+          remove-android: 'true'
       - name: Install deps
         run: |
-          apt update
-          apt install jq sudo rsync build-essential wget curl git -y
-          apt install python3 qemu-user qemu-user-binfmt -y
+          sudo rm /etc/apt/sources.list
+          sudo rm /etc/apt/sources.list.d/*
+          cat > /etc/apt/sources.list << EOF
+          # 默认注释了源码镜像以提高 apt update 速度，如有需要可自行取消注释
+          deb http://deb.debian.org/debian/ trixie main contrib non-free non-free-firmware
+          # deb-src http://deb.debian.org/debian/ trixie main contrib non-free non-free-firmware
 
-          # Prepare binfmt
-          mount binfmt_misc -t binfmt_misc /proc/sys/fs/binfmt_misc
-          curl -fsSL -o /usr/local/bin/systemctl-docker https://raw.githubusercontent.com/gdraheim/docker-systemctl-replacement/refs/heads/master/files/docker/systemctl3.py
-          chmod +x /usr/local/bin/systemctl-docker
-          if [ -e /usr/bin/systemctl ]; then mv /usr/bin/systemctl /usr/bin/systemctl.backup ; fi
-          mv /usr/local/bin/systemctl-docker /usr/bin/systemctl
-          /usr/bin/systemctl start systemd-binfmt.service
+          deb http://deb.debian.org/debian/ trixie-updates main contrib non-free non-free-firmware
+          # deb-src http://deb.debian.org/debian/ trixie-updates main contrib non-free non-free-firmware
+
+          deb http://deb.debian.org/debian/ trixie-backports main contrib non-free non-free-firmware
+          # deb-src http://deb.debian.org/debian/ trixie-backports main contrib non-free non-free-firmware
+
+          # 以下安全更新软件源包含了官方源与镜像站配置，如有需要可自行修改注释切换
+          deb https://security.debian.org/debian-security trixie-security main contrib non-free non-free-firmware
+          # deb-src https://security.debian.org/debian-security trixie-security main contrib non-free non-free-firmware
+          EOF
+          sudo apt update
+          sudo apt full-upgrade
           
       # PREFER_DOCKER=no ./compile.sh BOARD=uefi-loong64 BRANCH=current KERNEL_CONFIGURE=no DEB_COMPRESS=xz KERNEL_BTF=yes KERNEL_GIT=shallow RELEASE=sid EXPERT=yes BUILD_DESKTOP=no BUILD_MINIMAL=no
       - name: Rebuild Armbian
