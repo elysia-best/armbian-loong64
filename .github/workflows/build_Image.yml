@@ -29,7 +29,7 @@ jobs:
           mount binfmt_misc -t binfmt_misc /proc/sys/fs/binfmt_misc
           curl -fsSL -o /usr/local/bin/systemctl-docker https://raw.githubusercontent.com/gdraheim/docker-systemctl-replacement/refs/heads/master/files/docker/systemctl3.py
           chmod +x /usr/local/bin/systemctl-docker
-          if [ -e /usr/bin/systemctl ]; then mv /usr/bin/systemctl.backup ; fi
+          if [ -e /usr/bin/systemctl ]; then mv /usr/bin/systemctl /usr/bin/systemctl.backup ; fi
           mv /usr/local/bin/systemctl-docker /usr/bin/systemctl
           /usr/bin/systemctl start systemd-binfmt.service
           
