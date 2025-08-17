@@ -63,3 +63,4 @@ jobs:
           armbian_release: "sid"
           armbian_board: "uefi-loong64"
           armbian_ui: "minimal"
+          armbian_token: ${{ github.token }}
