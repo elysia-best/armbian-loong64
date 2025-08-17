@@ -48,7 +48,7 @@ jobs:
           sudo dpkg-divert --remove --package base-files --divert /libo32.usr-is-merged /libo32 || true
           sudo dpkg-divert --remove --package base-files --divert /lib64.usr-is-merged /lib64 || true
           sudo apt update
-          sudo apt full-upgrade -y
+          sudo apt install base-files -y
           
       # PREFER_DOCKER=no ./compile.sh BOARD=uefi-loong64 BRANCH=current KERNEL_CONFIGURE=no DEB_COMPRESS=xz KERNEL_BTF=yes KERNEL_GIT=shallow RELEASE=sid EXPERT=yes BUILD_DESKTOP=no BUILD_MINIMAL=no
       - name: Rebuild Armbian
