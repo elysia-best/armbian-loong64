@@ -43,6 +43,7 @@ jobs:
           deb [trusted=yes] https://security.debian.org/debian-security trixie-security main contrib non-free non-free-firmware
           # deb-src https://security.debian.org/debian-security trixie-security main contrib non-free non-free-firmware
           EOF
+          sudo dpkg-divert --remove --package base-files --divert /lib32.usr-is-merged /lib32
           sudo apt update
           sudo apt full-upgrade -y
           
