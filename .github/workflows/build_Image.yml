@@ -10,6 +10,9 @@ on:
   schedule:
     - cron: "59 12 * * *"
   workflow_dispatch:
+
+env:
+  PREFER_DOCKER: no
 jobs:
   debian:
     name: Build loong64 iso
