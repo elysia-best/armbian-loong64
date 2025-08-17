@@ -46,6 +46,7 @@ jobs:
           sudo dpkg-divert --remove --package base-files --divert /lib32.usr-is-merged /lib32 || true
           sudo dpkg-divert --remove --package base-files --divert /libx32.usr-is-merged /libx32 || true
           sudo dpkg-divert --remove --package base-files --divert /libo32.usr-is-merged /libo32 || true
+          sudo dpkg-divert --remove --package base-files --divert /lib64.usr-is-merged /lib64 || true
           sudo apt update
           sudo apt full-upgrade -y
           
