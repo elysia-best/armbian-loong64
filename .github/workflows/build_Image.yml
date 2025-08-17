@@ -14,13 +14,15 @@ jobs:
   debian:
     name: Build loong64 iso
     runs-on: ubuntu-latest
-    container: debian:trixie-backports
+    container:
+      image: debian:trixie-backports
+      options: --privileged=true
     permissions: write-all
     steps:
       - name: Install deps
         run: |
           apt update
-          apt install jq sudo rsync build-essential wget curl -y
+          apt install jq sudo rsync build-essential wget curl git -y
       # PREFER_DOCKER=no ./compile.sh BOARD=uefi-loong64 BRANCH=current KERNEL_CONFIGURE=no DEB_COMPRESS=xz KERNEL_BTF=yes KERNEL_GIT=shallow RELEASE=sid EXPERT=yes BUILD_DESKTOP=no BUILD_MINIMAL=no
       - name: Rebuild Armbian
         uses: armbian/build@v25.11.0-trunk.3
