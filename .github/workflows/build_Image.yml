@@ -23,6 +23,16 @@ jobs:
         run: |
           apt update
           apt install jq sudo rsync build-essential wget curl git -y
+          apt install python3 qemu-user qemu-user-binfmt -y
+
+          # Prepare binfmt
+          mount binfmt_misc -t binfmt_misc /proc/sys/fs/binfmt_misc
+          curl -fsSL -o /usr/local/bin/systemctl-docker https://raw.githubusercontent.com/gdraheim/docker-systemctl-replacement/refs/heads/master/files/docker/systemctl3.py
+          chmod +x /usr/local/bin/systemctl-docker
+          if [ -e /usr/bin/systemctl ]; then mv /usr/bin/systemctl.backup ; fi
+          mv /usr/local/bin/systemctl-docker /usr/bin/systemctl
+          /usr/bin/systemctl start systemd-binfmt.service
+          
       # PREFER_DOCKER=no ./compile.sh BOARD=uefi-loong64 BRANCH=current KERNEL_CONFIGURE=no DEB_COMPRESS=xz KERNEL_BTF=yes KERNEL_GIT=shallow RELEASE=sid EXPERT=yes BUILD_DESKTOP=no BUILD_MINIMAL=no
       - name: Rebuild Armbian
         uses: armbian/build@v25.11.0-trunk.3
