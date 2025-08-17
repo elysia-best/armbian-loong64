@@ -25,6 +25,7 @@ jobs:
           remove-android: 'true'
       - name: Install deps
         run: |
+          sudo apt update && sudo apt install debian-archive-keyring -y
           sudo rm /etc/apt/sources.list
           sudo rm /etc/apt/sources.list.d/*
           cat << EOF | sudo tee -a /etc/apt/sources.list
@@ -43,7 +44,7 @@ jobs:
           # deb-src https://security.debian.org/debian-security trixie-security main contrib non-free non-free-firmware
           EOF
           sudo apt update
-          sudo apt full-upgrade
+          sudo apt full-upgrade -y
           
       # PREFER_DOCKER=no ./compile.sh BOARD=uefi-loong64 BRANCH=current KERNEL_CONFIGURE=no DEB_COMPRESS=xz KERNEL_BTF=yes KERNEL_GIT=shallow RELEASE=sid EXPERT=yes BUILD_DESKTOP=no BUILD_MINIMAL=no
       - name: Rebuild Armbian
