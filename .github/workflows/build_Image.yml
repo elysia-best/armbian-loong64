@@ -20,7 +20,7 @@ jobs:
       - name: Install deps
         run: |
           apt update
-          apt install jq
+          apt install jq -y
       # PREFER_DOCKER=no ./compile.sh BOARD=uefi-loong64 BRANCH=current KERNEL_CONFIGURE=no DEB_COMPRESS=xz KERNEL_BTF=yes KERNEL_GIT=shallow RELEASE=sid EXPERT=yes BUILD_DESKTOP=no BUILD_MINIMAL=no
       - name: Rebuild Armbian
         uses: armbian/build@v25.11.0-trunk.3
