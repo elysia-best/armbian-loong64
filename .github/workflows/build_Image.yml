@@ -1,0 +1,28 @@
+name: Build Debian loong64 live cd
+
+permissions: write-all
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+  schedule:
+    - cron: "59 12 * * *"
+  workflow_dispatch:
+jobs:
+  debian:
+    name: Build loong64 iso
+    runs-on: ubuntu-latest
+    container: debian:trixie-backports
+    permissions: write-all
+    steps:
+      # PREFER_DOCKER=no ./compile.sh BOARD=uefi-loong64 BRANCH=current KERNEL_CONFIGURE=no DEB_COMPRESS=xz KERNEL_BTF=yes KERNEL_GIT=shallow RELEASE=sid EXPERT=yes BUILD_DESKTOP=no BUILD_MINIMAL=no
+      - name: Rebuild Armbian
+        uses: armbian/build@v25.11.0-trunk.3
+        with:
+          armbian_target: "image"
+          armbian_kernel_branch: "current"
+          armbian_release: "sid"
+          armbian_board: "uefi-loong64"
+          armbian_ui: "minimal"
