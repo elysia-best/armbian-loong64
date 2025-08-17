@@ -25,6 +25,7 @@ jobs:
           remove-android: 'true'
       - name: Install deps
         run: |
+          sudo apt-get autoremove docker docker-ce docker-engine  docker.io  containerd runc -y
           sudo apt update && sudo apt install debian-archive-keyring -y
           sudo rm /etc/apt/sources.list
           sudo rm /etc/apt/sources.list.d/*
